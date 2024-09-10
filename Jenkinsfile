@@ -5,6 +5,11 @@ pipeline {
             steps {
                 // Correct placement
                 sh 'echo Hello, World!'
+     
+  
+             stage('Test') {
+              steps {
+                sh 'echo "This is a test stage"'
             }
         }
     }
