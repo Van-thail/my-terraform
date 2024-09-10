@@ -1,5 +1,11 @@
 pipeline {
     agent any
+environment {
+    PATH = "/path/to/your/command:${env.PATH}"
+}
+sh '/usr/local/bin/mycommand'
+sh 'env'
+
 
     stages {
         stage('Build') {
