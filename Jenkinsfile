@@ -1,12 +1,32 @@
-
-/* Requires the Docker Pipeline plugin */
 pipeline {
     agent any
+
     stages {
-        stage('Example') {
+        stage('Build') {
             steps {
-                echo 'Hello World'
+                sh 'npm install'
+                sh 'npm run build'
             }
+        }
+
+        stage('Test') {
+            steps {
+                script {
+                    if (fileExists('build/index.html')) {
+                        echo 'build/index.html exists.'
+                    } else {
+                        error 'build/index.html does not exist!'
+                    }
+                }
+                sh 'npm test'
+            }
+        }
     }
-}
+
+    post {
+        always {
+            junit 'test-results.xml' // Replace this with the appropriate test result file if needed
+            archiveArtifacts artifacts: '**/target/*.jar', allowEmptyArchive: true
+        }
+    }
 }
